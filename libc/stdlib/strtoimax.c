@@ -47,6 +47,9 @@ strtoimax(const char *nptr, char **endptr, int base)
 	int c;
 	int neg, any, cutlim;
 
+	if (nptr == NULL)
+	  return 0;
+
 	/*
 	 * Skip white space and pick up leading +/- sign if any.
 	 * If base is 0, allow 0x for hex and 0 for octal, else
