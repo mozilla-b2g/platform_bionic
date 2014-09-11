@@ -564,12 +564,16 @@ ifneq ($(filter arm x86,$(TARGET_ARCH)),)
 #
 
 libc_crt_target_so_cflags := $(libc_crt_target_cflags)
+libc_crt_target_crtstart_file := $(LOCAL_PATH)/arch-$(TARGET_ARCH)/bionic/crtbegin.c
+libc_crt_target_crtstart_so_file := $(LOCAL_PATH)/arch-$(TARGET_ARCH)/bionic/crtbegin_so.c
 ifeq ($(TARGET_ARCH),x86)
     # This flag must be added for x86 targets, but not for ARM
     libc_crt_target_so_cflags += -fPIC
+    libc_crt_target_crtstart_file := $(LOCAL_PATH)/arch-$(TARGET_ARCH)/bionic/crtbegin.S
+    libc_crt_target_crtstart_so_file := $(LOCAL_PATH)/arch-$(TARGET_ARCH)/bionic/crtbegin_so.S
 endif
 GEN := $(TARGET_OUT_STATIC_LIBRARIES)/crtbegin_so.o
-$(GEN): $(LOCAL_PATH)/arch-$(TARGET_ARCH)/bionic/crtbegin_so.S
+$(GEN): $(libc_crt_target_crtstart_so_file)
 	@mkdir -p $(dir $@)
 	$(TARGET_CC) $(libc_crt_target_so_cflags) -o $@ -c $<
 ALL_GENERATED_SOURCES += $(GEN)
@@ -583,13 +587,13 @@ endif # TARGET_ARCH == x86 || TARGET_ARCH == arm
 
 
 GEN := $(TARGET_OUT_STATIC_LIBRARIES)/crtbegin_static.o
-$(GEN): $(LOCAL_PATH)/arch-$(TARGET_ARCH)/bionic/crtbegin_static.S
+$(GEN): $(libc_crt_target_crtstart_file)
 	@mkdir -p $(dir $@)
 	$(TARGET_CC) $(libc_crt_target_cflags) -o $@ -c $<
 ALL_GENERATED_SOURCES += $(GEN)
 
 GEN := $(TARGET_OUT_STATIC_LIBRARIES)/crtbegin_dynamic.o
-$(GEN): $(LOCAL_PATH)/arch-$(TARGET_ARCH)/bionic/crtbegin_dynamic.S
+$(GEN): $(libc_crt_target_crtstart_file)
 	@mkdir -p $(dir $@)
 	$(TARGET_CC) $(libc_crt_target_cflags) -o $@ -c $<
 ALL_GENERATED_SOURCES += $(GEN)
