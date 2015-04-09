@@ -46,3 +46,34 @@ void* je_memalign_round_up_boundary(size_t boundary, size_t size) {
   }
   return je_memalign(boundary, size);
 }
+
+#ifdef mallctl
+#undef mallctl
+#endif
+#ifdef mallctlnametomib
+#undef mallctlnametomib
+#endif
+#ifdef mallctlbymib
+#undef mallctlbymib
+#endif
+#ifdef nallocx
+#undef nallocx
+#endif
+
+int mallctl(const char *name, void *oldp,
+    size_t *oldlenp, void *newp, size_t newlen) {
+  return je_mallctl(name, oldp, oldlenp, newp, newlen);
+}
+
+int mallctlnametomib(const char *name, size_t *mibp, size_t *miblenp) {
+  return je_mallctlnametomib(name, mibp, miblenp);
+}
+
+int	mallctlbymib(const size_t *mib, size_t miblen,
+    void *oldp, size_t *oldlenp, void *newp, size_t newlen) {
+  return je_mallctlbymib(mib, miblen, oldp, oldlenp, newp, newlen);
+}
+
+size_t nallocx(size_t size, int flags) {
+  return je_nallocx(size, flags);
+}
