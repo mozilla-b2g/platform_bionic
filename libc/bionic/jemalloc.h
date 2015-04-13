@@ -28,6 +28,14 @@ struct mallinfo je_mallinfo();
 void* je_memalign_round_up_boundary(size_t, size_t);
 void* je_pvalloc(size_t);
 
+int mallctl(const char *name, void *oldp,
+    size_t *oldlenp, void *newp, size_t newlen) __LIBC_ABI_PUBLIC__;
+int mallctlnametomib(const char *name, size_t *mibp,
+    size_t *miblenp) __LIBC_ABI_PUBLIC__;
+int mallctlbymib(const size_t *mib, size_t miblen,
+    void *oldp, size_t *oldlenp, void *newp, size_t newlen) __LIBC_ABI_PUBLIC__;
+size_t nallocx(size_t size, int flags) __LIBC_ABI_PUBLIC__;
+
 __END_DECLS
 
 #endif  // LIBC_BIONIC_DLMALLOC_H_
