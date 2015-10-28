@@ -274,7 +274,7 @@ settzname(void)
     tzname[1] = wildabbr;
 #ifdef USG_COMPAT
     daylight = 0;
-    timezone = 0;
+    timezone = -sp->ttis[sp->defaulttype].tt_gmtoff;
 #endif /* defined USG_COMPAT */
 #ifdef ALTZONE
     altzone = 0;
@@ -1146,6 +1146,7 @@ tzparse(const char * name, register struct state * const sp,
         sp->ttis[0].tt_gmtoff = -stdoffset;
         sp->ttis[0].tt_isdst = 0;
         sp->ttis[0].tt_abbrind = 0;
+        sp->defaulttype = 0;
     }
     sp->charcnt = stdlen + 1;
     if (dstlen != 0)
